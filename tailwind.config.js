@@ -17,11 +17,6 @@ module.exports = {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['Inter var', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Clash Display', 'system-ui', 'sans-serif'],
-        heading: ['Cal Sans', 'Inter var', 'system-ui', 'sans-serif'],
-      },
       scale: {
         '102': '1.02',
       },

@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "@/styles/globals.css"
+import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ClerkProvider } from "@clerk/nextjs"
+import { ClerkProvider } from '@clerk/nextjs'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -17,14 +17,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,400&display=swap" />
-        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cal-sans@400,700&display=swap" />
-      </head>
-      <body className={`${inter.className} font-sans antialiased`}>
-        <ClerkProvider>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -33,9 +28,9 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
-        </ClerkProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
 
