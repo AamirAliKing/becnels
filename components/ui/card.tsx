@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props} />
+  <div ref={ref} className={cn("rounded-2xl border bg-card text-card-foreground shadow-sm", className)} {...props} />
 ))
 Card.displayName = "Card"
 
@@ -12,7 +12,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white", className)}
+      className={cn("flex flex-col space-y-1.5 p-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-t-2xl", className)}
       {...props}
     />
   ),
@@ -47,7 +47,7 @@ interface CardContentLinkProps extends React.HTMLAttributes<HTMLDivElement> {
 const CardContentLink = React.forwardRef<HTMLDivElement, CardContentLinkProps>(
   ({ className, href = "/messages", children, ...props }, ref) => {
     const content = (
-      <div ref={ref} className={cn("p-6 pt-0 cursor-pointer hover:bg-blue-50 transition-colors", className)} {...props}>
+      <div ref={ref} className={cn("p-6 pt-0 cursor-pointer hover:bg-blue-50 rounded-xl transition-colors", className)} {...props}>
         {children}
       </div>
     )

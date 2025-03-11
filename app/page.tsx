@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type React from "react"
 import dynamic from 'next/dynamic'
@@ -30,6 +30,9 @@ import { Separator } from "@/components/ui/separator"
 import { Header } from "@/components/Header"
 import { ProfileCard } from "@/components/ProfileCard"
 import { syncUserWithSupabase, updateUserProfile } from "@/lib/services/userService"
+import { MobileMenu } from "@/components/MobileMenu"
+import { MainNav } from "@/components/MainNav"
+import { CardSkeleton, ProfileCardSkeleton, ServiceUpdateSkeleton } from "@/components/ui/skeleton"
 
 interface Vehicle {
   id: string
@@ -175,31 +178,65 @@ export default function Dashboard() {
 
   if (!isLoaded || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50">
+        <MainNav />
+        <main className="flex-1 container mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Sidebar Skeleton */}
+            <div className="hidden md:block lg:col-span-3">
+              <div className="sticky top-24">
+                <ProfileCardSkeleton />
+              </div>
+            </div>
+
+            {/* Main Content Skeleton */}
+            <div className="lg:col-span-6 space-y-6">
+              <CardSkeleton />
+              <CardSkeleton />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <CardSkeleton />
+                <CardSkeleton />
+              </div>
+            </div>
+
+            {/* Right Sidebar Skeleton */}
+            <div className="hidden lg:block lg:col-span-3">
+              <div className="sticky top-24 space-y-6">
+                <CardSkeleton />
+                <div className="space-y-4">
+                  <ServiceUpdateSkeleton />
+                  <ServiceUpdateSkeleton />
+                  <ServiceUpdateSkeleton />
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50">
-      <Header />
-      
+      <MainNav />
       <main className="flex-1 container mx-auto px-4 py-6 animate-fadeIn">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-3 transform hover:scale-102 transition-transform duration-300">
-            <ProfileCard
-              userName={userName}
-              profileImage={profileImage}
-              onEditProfile={() => setIsProfileDialogOpen(true)}
-              onScheduleService={() => setIsAppointmentDialogOpen(true)}
-            />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+          {/* Left Sidebar - Sticky */}
+          <div className="hidden md:block lg:col-span-3">
+            <div className="sticky top-24 transform hover:scale-102 transition-transform duration-300">
+              <ProfileCard
+                userName={userName}
+                profileImage={profileImage}
+                onEditProfile={() => setIsProfileDialogOpen(true)}
+                onScheduleService={() => setIsAppointmentDialogOpen(true)}
+              />
+            </div>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-6">
+          {/* Main Content - Scrollable */}
+          <div className="lg:col-span-6 max-h-[calc(100vh-8rem)] overflow-y-auto p-6 custom-scrollbar bg-white rounded-2xl">
             <Tabs defaultValue="repairs" className="mb-6">
-              <TabsList className="grid w-full grid-cols-3 mb-4 bg-white/50 backdrop-blur-sm">
+              <TabsList className="grid w-full grid-cols-3 mb-4 bg-black/5 backdrop-blur-sm">
                 <TabsTrigger value="repairs" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-300">Current Repairs</TabsTrigger>
                 <TabsTrigger value="history" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-300">Service History</TabsTrigger>
                 <TabsTrigger value="updates" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-300">Service Updates</TabsTrigger>
@@ -305,6 +342,91 @@ export default function Dashboard() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Oil Change Service */}
+                <Card className="transform hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold">Oil Change Service</h3>
+                      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Completed</Badge>
+                    </div>
+                    <p className="text-gray-600 mb-4">
+                      Full synthetic oil change with premium filter replacement. All fluid levels checked and topped
+                      off.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div
+                        className="relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+                        onClick={() => setSelectedImage("/oil1.jpeg")}
+                      >
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        <Image
+                          src="/oil1.jpeg"
+                          alt="Oil change"
+                          width={120}
+                          height={120}
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                      <div
+                        className="relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+                        onClick={() => setSelectedImage("/oil2.jpeg")}
+                      >
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        <Image
+                          src="/oil2.jpeg"
+                          alt="Mechanic working"
+                          width={120}
+                          height={120}
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Oil Change Service */}
+                <Card className="transform hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold">Oil Change Service</h3>
+                      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Completed</Badge>
+                    </div>
+                    <p className="text-gray-600 mb-4">
+                      Full synthetic oil change with premium filter replacement. All fluid levels checked and topped
+                      off.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div
+                        className="relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+                        onClick={() => setSelectedImage("/oil1.jpeg")}
+                      >
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        <Image
+                          src="/oil1.jpeg"
+                          alt="Oil change"
+                          width={120}
+                          height={120}
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                      <div
+                        className="relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+                        onClick={() => setSelectedImage("/oil2.jpeg")}
+                      >
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        <Image
+                          src="/oil2.jpeg"
+                          alt="Mechanic working"
+                          width={120}
+                          height={120}
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
               </TabsContent>
 
               <TabsContent value="history">
@@ -419,140 +541,142 @@ export default function Dashboard() {
             </Tabs>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Messages */}
-            <Card className="transform hover:shadow-xl transition-all duration-300">
-              <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
-                <div className="flex justify-between items-center">
-                  <CardTitle>Messages</CardTitle>
-                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">3 New</Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Link href="/messages?conversation=1" className="block">
-                  <div className="p-3 rounded-lg border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 transform hover:-translate-y-1">
+          {/* Right Sidebar - Sticky */}
+          <div className="hidden md:block lg:col-span-3">
+            <div className="sticky top-24 space-y-6">
+              {/* Messages */}
+              <Card className="transform hover:shadow-xl transition-all duration-300">
+                <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
+                  <div className="flex justify-between items-center">
+                    <CardTitle>Messages</CardTitle>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">3 New</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Link href="/messages?conversation=1" className="block">
+                    <div className="p-3 m-2 rounded-lg border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 transform">
+                      <div className="flex items-start">
+                        <Avatar className="h-10 w-10 mr-3 border border-blue-200">
+                          <AvatarImage src="https://randomuser.me/api/portraits/men/72.jpg" alt="Service Advisor" />
+                          <AvatarFallback>SA</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h4 className="font-medium">Service Advisor</h4>
+                          <p className="text-sm text-gray-600">Your car is ready for pickup...</p>
+                          <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link href="/messages?conversation=2" className="block">
+                    <div className="p-3 rounded-lg border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 transform ">
+                      <div className="flex items-start">
+                        <Avatar className="h-10 w-10 mr-3 border border-blue-200">
+                          <AvatarImage src="https://lp-auto-assets.s3.amazonaws.com/service/parts-center/M3/secc1.jpg" alt="Parts Department" />
+                          <AvatarFallback>PD</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h4 className="font-medium">Parts Department</h4>
+                          <p className="text-sm text-gray-600">Parts have arrived for your...</p>
+                          <p className="text-xs text-gray-400 mt-1">Yesterday</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link href="/messages">
+                    <Button
+                      variant="outline"
+                      className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200 mt-2"
+                    >
+                      View All Messages
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Upcoming Services */}
+              <Card className="transform hover:shadow-xl transition-all duration-300">
+                <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
+                  <CardTitle>Upcoming Services</CardTitle>
+                  <CardDescription className="text-white">Your scheduled maintenance</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-3 my-2 rounded-lg border hover:shadow-md transition-all">
                     <div className="flex items-start">
-                      <Avatar className="h-10 w-10 mr-3 border border-blue-200">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Service Advisor" />
-                        <AvatarFallback>SA</AvatarFallback>
-                      </Avatar>
+                      <div className="bg-blue-50 p-2 rounded-full mr-3">
+                        <Calendar className="h-5 w-5 text-blue-600" />
+                      </div>
                       <div>
-                        <h4 className="font-medium">Service Advisor</h4>
-                        <p className="text-sm text-gray-600">Your car is ready for pickup...</p>
-                        <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
+                        <h4 className="font-medium">Scheduled Maintenance</h4>
+                        <p className="text-sm text-gray-600">March 15, 2025</p>
+                        <Badge variant="outline" className="mt-2">
+                          Upcoming
+                        </Badge>
                       </div>
                     </div>
                   </div>
-                </Link>
 
-                <Link href="/messages?conversation=2" className="block">
-                  <div className="p-3 rounded-lg border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="p-3 rounded-lg border hover:shadow-md transition-all">
                     <div className="flex items-start">
-                      <Avatar className="h-10 w-10 mr-3 border border-blue-200">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Parts Department" />
-                        <AvatarFallback>PD</AvatarFallback>
-                      </Avatar>
+                      <div className="bg-purple-50 p-2 rounded-full mr-3">
+                        <Clock className="h-5 w-5 text-purple-600" />
+                      </div>
                       <div>
-                        <h4 className="font-medium">Parts Department</h4>
-                        <p className="text-sm text-gray-600">Parts have arrived for your...</p>
-                        <p className="text-xs text-gray-400 mt-1">Yesterday</p>
+                        <h4 className="font-medium">Tire Rotation</h4>
+                        <p className="text-sm text-gray-600">March 28, 2025</p>
+                        <Badge variant="outline" className="mt-2">
+                          Upcoming
+                        </Badge>
                       </div>
                     </div>
                   </div>
-                </Link>
 
-                <Link href="/messages">
-                  <Button
-                    variant="outline"
-                    className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200 mt-2"
-                  >
-                    View All Messages
+                  <Button variant="outline" className="w-full mt-2" onClick={() => setIsAppointmentDialogOpen(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Schedule New Service
                   </Button>
-                </Link>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Upcoming Services */}
-            <Card className="transform hover:shadow-xl transition-all duration-300">
-              <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
-                <CardTitle>Upcoming Services</CardTitle>
-                <CardDescription className="text-white">Your scheduled maintenance</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-3 rounded-lg border hover:shadow-md transition-all">
-                  <div className="flex items-start">
-                    <div className="bg-blue-50 p-2 rounded-full mr-3">
-                      <Calendar className="h-5 w-5 text-blue-600" />
+              {/* Quick Stats */}
+              <Card className="overflow-hidden transform hover:shadow-xl transition-all duration-300">
+                <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
+                  <CardTitle>Quick Stats</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="p-6 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
+                    <div className="mb-6 pb-6 border-b border-blue-400">
+                      <p className="text-blue-100 text-sm">Next Service Due</p>
+                      <div className="flex items-baseline">
+                        <p className="text-white text-3xl font-bold">0</p>
+                        <p className="text-blue-100 ml-2">miles</p>
+                      </div>
                     </div>
                     <div>
-                      <h4 className="font-medium text-white">Scheduled Maintenance</h4>
-                      <p className="text-sm text-gray-600">March 15, 2025</p>
-                      <Badge variant="outline" className="mt-2">
-                        Upcoming
-                      </Badge>
+                      <p className="text-blue-100 text-sm">Total Services</p>
+                      <div className="flex items-baseline">
+                        <p className="text-white text-3xl font-bold">0</p>
+                        <p className="text-blue-100 ml-2">completed</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="p-3 rounded-lg border hover:shadow-md transition-all">
-                  <div className="flex items-start">
-                    <div className="bg-purple-50 p-2 rounded-full mr-3">
-                      <Clock className="h-5 w-5 text-purple-600" />
+                  <div className="p-4 bg-white">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">Vehicle Health</span>
+                      <span className="font-medium text-green-600">Excellent</span>
                     </div>
-                    <div>
-                      <h4 className="font-medium">Tire Rotation</h4>
-                      <p className="text-sm text-gray-600">March 28, 2025</p>
-                      <Badge variant="outline" className="mt-2">
-                        Upcoming
-                      </Badge>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2 overflow-hidden">
+                      <div 
+                        className="bg-green-500 h-2 rounded-full transition-all duration-1000 ease-out animate-progressBar" 
+                        style={{ width: "90%" }}
+                      ></div>
                     </div>
                   </div>
-                </div>
-
-                <Button variant="outline" className="w-full mt-2" onClick={() => setIsAppointmentDialogOpen(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Schedule New Service
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <Card className="overflow-hidden transform hover:shadow-xl transition-all duration-300">
-              <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
-                <CardTitle>Quick Stats</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="p-6 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white">
-                  <div className="mb-6 pb-6 border-b border-blue-400">
-                    <p className="text-blue-100 text-sm">Next Service Due</p>
-                    <div className="flex items-baseline">
-                      <p className="text-white text-3xl font-bold">0</p>
-                      <p className="text-blue-100 ml-2">miles</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-blue-100 text-sm">Total Services</p>
-                    <div className="flex items-baseline">
-                      <p className="text-white text-3xl font-bold">0</p>
-                      <p className="text-blue-100 ml-2">completed</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 bg-white">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Vehicle Health</span>
-                    <span className="font-medium text-green-600">Excellent</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2 overflow-hidden">
-                    <div 
-                      className="bg-green-500 h-2 rounded-full transition-all duration-1000 ease-out animate-progressBar" 
-                      style={{ width: "90%" }}
-                    ></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </main>
@@ -629,7 +753,7 @@ export default function Dashboard() {
 
       {/* Replace direct dialog rendering with lazy loaded components */}
       <Suspense fallback={null}>
-            {selectedImage && (
+        {selectedImage && (
           <ImageDialog
             image={selectedImage}
             onClose={() => setSelectedImage(null)}

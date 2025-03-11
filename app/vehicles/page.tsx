@@ -33,6 +33,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
+import { MainNav } from "@/components/MainNav"
 
 // Define the vehicle interface
 interface Vehicle {
@@ -235,46 +236,7 @@ export default function VehiclesPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center">
-      <Image alt="logo" src="/logo.png" className="w-14 font-bold text-blue-600" width={20} height={20}/>
-      <h1 className="text-xl font-bold text-blue-600 ml-6">Becnels Automotive, LLC</h1>
-      </div>
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="/" className="ont-medium text-gray-500 hover:text-gray-900 hover:border-b-2 hover:border-blue-600 pb-1 transition-all">
-              Dashboard
-            </a>
-            <Link
-              href="/messages"
-              className="font-medium text-gray-500 hover:text-gray-900 hover:border-b-2 hover:border-blue-600 pb-1 transition-all"
-            >
-              Messages
-            </Link>
-            <Link
-              href="/vehicles"
-              className="ont-medium text-gray-900 border-b-2 border-blue-600 pb-1"
-            >
-              My Vehicle
-            </Link>
-            <a
-              href="#"
-              className="font-medium text-gray-500 hover:text-gray-900 hover:border-b-2 hover:border-blue-600 pb-1 transition-all"
-            >
-              Repairs
-            </a>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-            </Button>
-            <UserButton afterSignOutUrl="/sign-in" />
-          </div>
-        </div>
-      </header>
-
+      <MainNav />
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-6">
         <div className="flex justify-between items-center mb-6">
