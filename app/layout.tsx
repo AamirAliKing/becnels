@@ -33,6 +33,3 @@ export default function RootLayout({
     </ClerkProvider>
   )
 }
-
-import './globals.css'
-import LoginPage from "./login/page"

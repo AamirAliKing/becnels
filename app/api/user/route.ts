@@ -1,3 +1,5 @@
+'use client';
+
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';

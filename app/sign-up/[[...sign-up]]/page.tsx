@@ -1,6 +1,8 @@
 'use client';
 
 import { SignIn, SignUp } from "@clerk/nextjs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Car, Divide } from "lucide-react"
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -23,7 +25,7 @@ export default function Page() {
       </header>
       <div className="w-full max-w-md mx-auto my-12">
         
-          <SignIn/>
+          <SignUp />
        
       </div>
     </>
